@@ -1,33 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
+import { useState } from 'react';
 import './App.css'
+import LangSwitcher from './components/LangSwitcher/LangSwitcher';
+import LoginForm from './components/LoginForm/LoginForm'
+import SearchBar from './components/SearchBar/SearchBar';
+import RadioButton from './components/RadioButton/RadioButton';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [lang, setLang] = useState("uk");
+  // Контрольована форма
+  const [values, setValues] = useState({
+    login: "",
+    password: "",
+  });
+  // radioButton======
+  const [coffeeSize, setCoffeeSize] = useState("sm");
+  
+  const handleSizeChange = (evt) => {
+    setCoffeeSize(evt.target.value);
+  };
+  // ================
+  
+  const handleLogin = (userData) => {
+    console.log(userData);    
+  }
 
+  // Контрольована форма====
+
+  const handleChange = (evt) => {
+    setValues({
+      ...values,
+      [evt.target.name]: evt.target.value,
+    });
+  };
+  
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    
+    console.log(values);
+    
+    setValues({
+      login: "",
+      password: "",
+    });
+  };
+  // =========
   return (
     <>
+      <SearchBar/>
+      <p>=========================</p>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {/* <LoginForm onLoginMy={handleLogin} /> */}
+        <LoginForm onSubmit={handleSubmit} onChange={handleChange} values={values} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p>=========================</p>
+      <p>Selected language: {lang}</p>
+      <LangSwitcher value={lang} onSelect={setLang} />
+      <RadioButton coffeeSize={coffeeSize} onChange={handleSizeChange} />
     </>
   )
 }
